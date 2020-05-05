@@ -28,7 +28,7 @@ app.use("/", routes);
 //     });
 // });
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 8443;
 
 app.listen(PORT, () => {
   console.log(`server started at port ${PORT}...`);

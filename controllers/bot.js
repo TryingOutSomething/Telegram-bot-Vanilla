@@ -8,11 +8,15 @@ const test = (req, res, next) => {
   res.status(200).send("Hello World");
 };
 
+const test2 = (req, res, next) => {
+  console.log(req.body);
+};
+
 const setTelegramWebhook = (req, res, next) => {
   // change the url everytime you run ngrok
   let config = {
-    url: "https://13506b5c.ngrok.io",
-    allowed_updates: ["start"],
+    url: "https://f8d5d70b.ngrok.io",
+    allowed_updates: ["sendMessage"],
   };
 
   axios
@@ -73,6 +77,7 @@ const getUserInfoAndReply = (req, res, next) => {
 
 module.exports = {
   test,
+  test2,
   getUserInfo,
   getUserInfoAndReply,
   setTelegramWebhook,
