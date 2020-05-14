@@ -1,6 +1,10 @@
 const axios = require("axios");
 const { DOMAIN_URL } = require("../constants");
-const { setTelegramWebHook, getWebHookInfo } = require("../api");
+const {
+  setTelegramWebHook,
+  getWebHookInfo,
+  sendMessageToTelegram,
+} = require("../api");
 
 const setWebHook = () => {
   let config = {
@@ -30,7 +34,18 @@ const getWebHook = () => {
   });
 };
 
+const sendMessage = (payload) => {
+  return new Promise((resolve, reject) => {
+    sendMessageToTelegram(payload)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((err) => reject(err));
+  });
+};
+
 module.exports = {
   getWebHook,
   setWebHook,
+  sendMessage,
 };
