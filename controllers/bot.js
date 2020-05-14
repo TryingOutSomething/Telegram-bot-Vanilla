@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { REQUEST_URL } = require("../constants");
-const { setWebHook } = require("../services/set-web-hook");
+const { setWebHook, getWebHook } = require("../services/web-hook-service");
 
 const setTelegramWebhook = (req, res, next) => {
   setWebHook()
@@ -12,15 +12,13 @@ const setTelegramWebhook = (req, res, next) => {
     });
 };
 
-const getUserInfo = (req, res, next) => {
-  axios
-    .get(`${REQUEST_URL}/getWebhookInfo`)
-    .then((response) => {
-      res.status(200).send(response.data);
+const getWebhookInfo = (req, res, next) => {
+  getWebHook()
+    .then((result) => {
+      res.status(200).send(result);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(502).send("Error occurred! Please try again later");
+      res.status(503).send(err);
     });
 };
 
@@ -46,7 +44,7 @@ const getUserInfoAndReply = (req, res, next) => {
 };
 
 module.exports = {
-  getUserInfo,
+  getWebhookInfo,
   getUserInfoAndReply,
   setTelegramWebhook,
 };

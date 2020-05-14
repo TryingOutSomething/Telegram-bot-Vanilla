@@ -1,7 +1,7 @@
 const REQUEST_URL = `https://api.telegram.org/bot${process.env.BOT_TOKEN}`;
-const WEBHOOK_URL = process.env.DOMAIN_NAME;
+const DOMAIN_URL = process.env.DOMAIN_NAME;
 
 module.exports = {
     REQUEST_URL,
-    WEBHOOK_URL
+    DOMAIN_URL
 }
