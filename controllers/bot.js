@@ -1,47 +1,36 @@
-const axios = require("axios");
-const { REQUEST_URL } = require("../constants");
 const {
-  setWebHook,
-  getWebHook,
   sendMessage,
+  sendEditedMessage,
 } = require("../services/telegram-service");
-const { conversationHandler } = require("../services/command-handler");
+const commandHandler = require("../services/command-handler");
 
-const setTelegramWebhook = (req, res, next) => {
-  setWebHook()
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+const getUserInfoAndReply = (req, res) => {
+  if (req.body.message) sendDefaultMessageToUser(req, res);
+  else setEditedMessage(req, res);
 };
 
-const getWebhookInfo = (req, res, next) => {
-  getWebHook()
-    .then((result) => {
-      res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(503).send(err);
-    });
-};
-
-const getUserInfoAndReply = async (req, res, next) => {
-  if (typeof req.body.message === "undefined") res.sendStatus(200);
-
-  let payload = await conversationHandler(req.body.message);
+const sendDefaultMessageToUser = (req, res) => {
+  let payload = commandHandler.defaultMessageTemplate(req.body.message);
 
   sendMessage(payload)
-    .then((response) => res.sendStatus(200))
+    .then(() => res.sendStatus(200))
     .catch((err) => {
-      console.log(err);
-      res.end(err.data.description);
+      console.log(err.response.data);
+      res.end(err.response.data.description);
+    });
+};
+
+const setEditedMessage = (req, res) => {
+  let payload = commandHandler.editInlineMessage(req.body.callback_query);
+  console.log(payload)
+  sendEditedMessage(payload)
+    .then(() => res.sendStatus(200))
+    .catch((err) => {
+      console.log(err.response.data);
+      res.end(err.response.data.description);
     });
 };
 
 module.exports = {
-  getWebhookInfo,
   getUserInfoAndReply,
-  setTelegramWebhook,
 };

@@ -1,9 +1,8 @@
-const axios = require("axios");
-const { DOMAIN_URL } = require("../constants");
+const { DOMAIN_URL } = require("../constants/server-constants");
 const {
   setTelegramWebHook,
-  getWebHookInfo,
   sendMessageToTelegram,
+  sendEditedMessageToTelegram,
 } = require("../api");
 
 const setWebHook = () => {
@@ -13,39 +12,29 @@ const setWebHook = () => {
 
   return new Promise((resolve, reject) => {
     setTelegramWebHook(config)
-      .then((response) => {
-        resolve(response.data);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
-
-const getWebHook = () => {
-  return new Promise((resolve, reject) => {
-    getWebHookInfo()
-      .then((response) => {
-        resolve(response.data);
-      })
-      .catch((err) => {
-        reject("Error occurred! Please try again later");
-      });
+      .then((response) => resolve(response.data))
+      .catch((err) => reject(err));
   });
 };
 
 const sendMessage = (payload) => {
   return new Promise((resolve, reject) => {
     sendMessageToTelegram(payload)
-      .then((response) => {
-        resolve(response.data);
-      })
+      .then((response) => resolve(response.data))
+      .catch((err) => reject(err));
+  });
+};
+
+const sendEditedMessage = (payload) => {
+  return new Promise((resolve, reject) => {
+    sendEditedMessageToTelegram(payload)
+      .then((response) => resolve(response.data))
       .catch((err) => reject(err));
   });
 };
 
 module.exports = {
-  getWebHook,
   setWebHook,
   sendMessage,
+  sendEditedMessage
 };

@@ -1,10 +1,9 @@
 const express = require("express");
 const Bot = require("../controllers/bot");
+const { isValidRequest } = require("../middlewares/validation");
 
 const router = express.Router();
 
-router.post("/", Bot.getUserInfoAndReply);
-router.get("/botStatus", Bot.getWebhookInfo);
-router.get("/setWebhook", Bot.setTelegramWebhook);
+router.post("/", isValidRequest, Bot.getUserInfoAndReply);
 
 module.exports = router;
