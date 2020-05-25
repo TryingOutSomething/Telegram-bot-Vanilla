@@ -22,7 +22,7 @@ const sendDefaultMessageToUser = (req, res) => {
 
 const setEditedMessage = (req, res) => {
   let payload = commandHandler.editInlineMessage(req.body.callback_query);
-  console.log(payload)
+  
   sendEditedMessage(payload)
     .then(() => res.sendStatus(200))
     .catch((err) => {

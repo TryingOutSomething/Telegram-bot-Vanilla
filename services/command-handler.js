@@ -11,13 +11,13 @@ const handleCallback = ({ message, data }) => {
   return { chat_id: message.chat.id, text: data };
 };
 
-const editInlineMessage = ({ id, message, data }) => {
+const editInlineMessage = ({ message, data }) => {
   switch (data.toLowerCase()) {
     case callbackDataConstants.SHORT_YEET:
-      return context.updateInlineMessage(message.message_id, "Smol yeet");
+      return context.updateInlineMessage(message, "Smol yeet");
 
     case callbackDataConstants.LONG_YEET:
-      return context.updateInlineMessage(message.message_id, "LARGE YEET BOI");
+      return context.updateInlineMessage(message, "LARGE YEET BOI");
 
     default:
       throw "Invalid inline option!";

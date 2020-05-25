@@ -10,19 +10,16 @@ const context = {
 
   _getBaseChatPayload: function (id) {
     if (containsInlineChatId(this._payload)) {
-      delete this._payload.inline_message_id;
+      delete this._payload.message_id;
     }
 
     this._payload.chat_id = id;
     return this;
   },
 
-  _getBaseInlinePayload: function (id) {
-    if (containsChatId(this._payload)) {
-      delete this._payload.chat_id;
-    }
-
-    this._payload.inline_message_id = id;
+  _getBaseInlinePayload: function (message_id, chat_id) {
+    this._payload.message_id = message_id;
+    this._payload.chat_id = chat_id;
     return this;
   },
 
@@ -53,8 +50,10 @@ const context = {
     return this._payload;
   },
 
-  updateInlineMessage: function (id, text) {
-    this._getBaseInlinePayload(id)._setMessageText(text)._setInlineoptions();
+  updateInlineMessage: function ({ message_id, chat }, text) {
+    this._getBaseInlinePayload(message_id, chat.id)
+      ._setMessageText(text)
+      ._setInlineoptions();
 
     return this._payload;
   },
@@ -65,7 +64,7 @@ const containsChatId = (payload) => {
 };
 
 const containsInlineChatId = (payload) => {
-  return payload.inline_message_id;
+  return payload.message_id;
 };
 
 module.exports = {
